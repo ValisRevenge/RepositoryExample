@@ -2,7 +2,7 @@
 //  BreedsModel.swift
 //  RepositoryExample
 //
-//  Created by Aleksey on 10/13/20.
+//  Created by Mishko on 10/13/20.
 //  Copyright © 2020 byMishko. All rights reserved.
 //
 
@@ -23,8 +23,10 @@ protocol BreedsInput {
 protocol BreedsOutput {}
 
 final class BreedsModel: EventNode {
-    private var paginationCounter: PaginationCounter = PaginationCounter(itemsPerPage: 10, currentPage: 1)
+    private var counter: PaginationCounter = PaginationCounter(itemsPerPage: 3,
+                                                                         currentPage: 1, nextPage: 2)
     private var breeds: [CatBreed] = []
+    private var service: BreedService = BreedService()
 }
 
 extension BreedsModel: BreedsInput {
@@ -34,12 +36,12 @@ extension BreedsModel: BreedsInput {
     }
     
     func load() {
+        guard !counter.isLoadingProceed else { return }
+        counter.currentPage += 1
         
-        let api = BreedAPI.allBreeds(page: paginationCounter.currentPage,
-                                     limit: paginationCounter.currentPage)
-        
-        request(api.url, method: .get, parameters: api.params, encoding: api.encoding, headers: api.headers).responseJSON(completionHandler: { [weak self] response in
-            
+        service.loadAllBreeds(currentPage: counter.currentPage, breedsPerPage: counter.itemsPerPage, completion: { [weak self] newBreeds in
+            self?.breeds.append(contentsOf: newBreeds)
+            self?.counter.nextPage += 1
         })
     }
     

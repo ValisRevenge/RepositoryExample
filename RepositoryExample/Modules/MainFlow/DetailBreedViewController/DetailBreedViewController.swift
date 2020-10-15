@@ -2,7 +2,7 @@
 //  DetailBreedViewController.swift
 //  RepositoryExample
 //
-//  Created by Aleksey on 10/15/20.
+//  Created by Mishko on 10/15/20.
 //  Copyright © 2020 byMishko. All rights reserved.
 //
 

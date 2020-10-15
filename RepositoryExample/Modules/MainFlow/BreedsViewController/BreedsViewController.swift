@@ -2,7 +2,7 @@
 //  BreedsViewController.swift
 //  RepositoryExample
 //
-//  Created by Aleksey on 10/13/20.
+//  Created by Mishko on 10/13/20.
 //  Copyright © 2020 byMishko. All rights reserved.
 //
 
@@ -17,7 +17,7 @@ final class BreedsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        model.load()
     }
 
 }

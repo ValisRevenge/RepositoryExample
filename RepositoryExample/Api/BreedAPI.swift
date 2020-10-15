@@ -2,7 +2,7 @@
 //  BreedAPI.swift
 //  RepositoryExample
 //
-//  Created by Aleksey on 10/12/20.
+//  Created by Mishko on 10/12/20.
 //  Copyright © 2020 byMishko. All rights reserved.
 //
 
@@ -32,15 +32,16 @@ enum BreedAPI: API {
     }
     
     var url: URL {
-        guard let infoDictionary: [String: Any] = Bundle.main.infoDictionary,
-            let baseUrl = infoDictionary["api_key"] as? String else {
-                return URL(string: "")!
-        }
+        let baseUrl: String = "https://api.thecatapi.com/v1"
         return URL(string: baseUrl + path)!
     }
     
     var headers: [String : String] {
-        return ["Name": "api_key", "Location": ""]
+        guard let infoDictionary: [String: Any] = Bundle.main.infoDictionary,
+            let key = infoDictionary["api_key"] as? String else {
+                return [:]
+        }
+        return ["x-api-key": key]
     }
     
     var params: [String : Any] {

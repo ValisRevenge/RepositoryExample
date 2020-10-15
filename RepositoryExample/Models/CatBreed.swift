@@ -2,7 +2,7 @@
 //  CatBreed.swift
 //  RepositoryExample
 //
-//  Created by Aleksey on 10/12/20.
+//  Created by Mishko on 10/12/20.
 //  Copyright © 2020 byMishko. All rights reserved.
 //
 
@@ -17,7 +17,7 @@ struct CatBreed: Codable {
     let rare: Int
     let origin: String
     let temperament: String
-    let weightImperial: String
+    let weightImperial: String?
     
     enum Keys: String, CodingKey {
         case name
@@ -36,10 +36,13 @@ struct CatBreed: Codable {
         name = try container.decode(String.self, forKey: .name)
         otherNames = nil
         lifeSpan = try container.decode(String.self, forKey: .life_span)
-        hairless = try container.decode(Bool.self, forKey: .hairless)
+        
+        let hairLevel: Int = try container.decode(Int.self, forKey: .hairless)
+        hairless = hairLevel == 1
+        
         rare = try container.decode(Int.self, forKey: .rare)
         origin = try container.decode(String.self, forKey: .origin)
         temperament = try container.decode(String.self, forKey: .temperament)
-        weightImperial = try container.decode(String.self, forKey: .weight_imperial)
+        weightImperial = try? container.decode(String.self, forKey: .weight_imperial)
     }
 }

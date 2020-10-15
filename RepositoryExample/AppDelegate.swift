@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  RepositoryExample
 //
-//  Created by Aleksey on 10/12/20.
+//  Created by Mishko on 10/12/20.
 //  Copyright © 2020 byMishko. All rights reserved.
 //
 
