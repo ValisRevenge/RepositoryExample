@@ -10,7 +10,7 @@ import UIKit
 
 class DetailBreedViewController: UIViewController {
     
-    @IBOutlet weak var breedImageView: UIImageView!
+    @IBOutlet weak var tableView: UITableView!
     
     @IBOutlet weak var rareLabel: UILabel!
     @IBOutlet weak var lifeLabel: UILabel!
@@ -25,9 +25,15 @@ class DetailBreedViewController: UIViewController {
         super.viewDidLoad()
 
         setup()
+        model.load()
     }
     
     private func setup() {
+        
+        tableView.dataSource = self
+        tableView.rowHeight = 200
+        tableView.register(UINib(nibName: "PhotoCell", bundle: nil), forCellReuseIdentifier: "cell")
+        
         title = model.title
         
         let breed = model.detailBreed
@@ -37,7 +43,35 @@ class DetailBreedViewController: UIViewController {
         originLabel.text = "Origin: " + breed.origin
         hairlessLabel.text = "Hairless: " + String(breed.hairless)
         temperamentLabel.text = "Temperament: " + breed.temperament
-        weightLabel.text = "Weight: " + (breed.weight ?? "no info")
+        weightLabel.text = "Intelligence: " + breed.intelligence
     }
 
+}
+
+extension DetailBreedViewController: DetailBreedOutput {
+    
+    func reload() {
+        tableView.reloadData()
+    }
+}
+
+extension DetailBreedViewController: UITableViewDataSource, UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return model.photosCount
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as? PhotoCell,
+            let url = model.urlAt(index: indexPath.row) else {
+            return UITableViewCell()
+        }
+        
+        cell.setup(url: url)
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return UIView()
+    }
 }

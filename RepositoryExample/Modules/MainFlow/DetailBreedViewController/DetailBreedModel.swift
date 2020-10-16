@@ -17,10 +17,16 @@ protocol DetailBreedInput {
     func urlAt(index: Int)-> URL?
 }
 
+protocol DetailBreedOutput: class {
+    func reload()
+}
+
 class DetailBreedModel: EventNode {
     
     private var breed: CatBreed!
     private var photos: [Photo] = []
+    
+    weak var output: DetailBreedOutput!
     
     init(parent: EventNode?, breed: CatBreed) {
         super.init(parent: parent)
@@ -45,15 +51,16 @@ extension DetailBreedModel: DetailBreedInput {
             hairless: breed.hairless,
             temperament: breed.temperament,
             origin: breed.origin,
-            weight: breed.weightImperial)
+            intelligence: breed.intelligence.name)
     }
     
     func load() {
         BreedService().loadBreedImages(breedId: breed.id,
                                        page: 0,
-                                       itemsPerPage: 2,
+                                       itemsPerPage: 5,
                                        completion: { [weak self] newPhotos in
             self?.photos.append(contentsOf: newPhotos)
+            self?.output.reload()
         })
     }
     

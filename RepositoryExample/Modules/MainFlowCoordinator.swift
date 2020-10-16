@@ -42,6 +42,7 @@ extension MainFlowCoordinator {
         let detailBreedVC = DetailBreedViewController(nibName: "DetailBreedViewController", bundle: nil)
         let model = DetailBreedModel(parent: self, breed: breed)
         
+        model.output = detailBreedVC
         detailBreedVC.model = model
         
         root.pushViewController(detailBreedVC, animated: true)

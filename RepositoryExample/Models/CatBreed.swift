@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct CatBreed: Codable {
+struct CatBreed: Decodable {
     
     let id: String
     let name: String
@@ -18,7 +18,7 @@ struct CatBreed: Codable {
     let rare: Bool
     let origin: String
     let temperament: String
-    let weightImperial: String?
+    var intelligence: Intelligence = .unknown
     
     enum Keys: String, CodingKey {
         case id
@@ -28,7 +28,7 @@ struct CatBreed: Codable {
         case hairless
         case alt_names
         case temperament
-        case weight_imperial
+        case intelligence
         case life_span
     }
     
@@ -47,6 +47,9 @@ struct CatBreed: Codable {
         rare = rareLevel == 1
         origin = try container.decode(String.self, forKey: .origin)
         temperament = try container.decode(String.self, forKey: .temperament)
-        weightImperial = try? container.decode(String.self, forKey: .weight_imperial)
+        
+        if let intellectScore = try? container.decode(Int.self, forKey: .intelligence) {
+            intelligence = Intelligence(rawValue: intellectScore) ?? .unknown
+        }
     }
 }

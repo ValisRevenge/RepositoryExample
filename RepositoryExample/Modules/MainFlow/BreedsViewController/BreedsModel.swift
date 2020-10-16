@@ -49,7 +49,6 @@ extension BreedsModel: BreedsInput {
     func load() {
         guard !counter.isLoadingProceed, !self.counter.isLimitReached else { return }
         counter.isLoadingProceed = true
-        print(counter.isLoadingProceed)
         counter.currentPage += 1
         
         service.loadAllBreeds(currentPage: counter.currentPage, breedsPerPage: counter.itemsPerPage, completion: { [weak self] newBreeds in
@@ -66,5 +65,4 @@ extension BreedsModel: BreedsInput {
     func openBreed(index: Int) {
         raise(event: BreedsEvent.openDetailBreed(breed: breeds[index]))
     }
-
 }

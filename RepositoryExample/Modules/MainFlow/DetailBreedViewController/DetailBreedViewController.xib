@@ -16,6 +16,7 @@
                 <outlet property="lifeLabel" destination="R5w-J9-IVU" id="JDl-Oh-9KF"/>
                 <outlet property="originLabel" destination="ZWP-PK-3g3" id="8uj-wi-Zcb"/>
                 <outlet property="rareLabel" destination="otx-vn-vT1" id="zWO-3x-cl9"/>
+                <outlet property="tableView" destination="lwr-YN-sjr" id="ehk-fa-o74"/>
                 <outlet property="temperamentLabel" destination="hRp-AB-w0w" id="4p6-ek-iiK"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="weightLabel" destination="a8R-Fb-JAf" id="neW-FJ-kT6"/>
@@ -62,9 +63,9 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="lwr-YN-sjr">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="lwr-YN-sjr">
                     <rect key="frame" x="0.0" y="205" width="375" height="462"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

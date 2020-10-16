@@ -19,5 +19,5 @@ struct DetailBreedDisplayable {
     let hairless: Bool
     let temperament: String
     let origin: String
-    let weight: String?
+    let intelligence: String
 }
