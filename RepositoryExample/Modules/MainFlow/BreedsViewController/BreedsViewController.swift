@@ -10,6 +10,7 @@ import UIKit
 
 final class BreedsViewController: UIViewController {
     
+    @IBOutlet weak var spinnerView: UIActivityIndicatorView!
     @IBOutlet weak var tableView: UITableView!
     
     var model: BreedsInput!
@@ -36,6 +37,7 @@ extension BreedsViewController: BreedsOutput {
     
     func reload() {
         tableView.reloadData()
+        spinnerView.isHidden = true
     }
 }
 
@@ -66,6 +68,7 @@ extension BreedsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row >= model.breedsCount - 2 {
             model.load()
+            spinnerView.isHidden = false
         }
     }
 }

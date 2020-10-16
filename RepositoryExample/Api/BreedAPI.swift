@@ -20,14 +20,14 @@ protocol API {
 enum BreedAPI: API {
     
     case allBreeds(page: Int, limit: Int)
-    case imagesBy(breedId: Int)
+    case imagesBy(breedId: String, page: Int, limit: Int)
     
     var path: String {
         switch self {
         case .allBreeds:
             return "/breeds"
         case .imagesBy:
-            return ""
+            return "/images/search"
         }
     }
     
@@ -48,8 +48,8 @@ enum BreedAPI: API {
         switch self {
         case .allBreeds(page: let currentPage, limit: let breedsPerPage):
             return ["page": currentPage, "limit": breedsPerPage]
-        case .imagesBy(breedId: let id):
-            return [:]
+        case .imagesBy(breedId: let id, page: let currentPage, limit: let breedsPerPage):
+            return ["page": currentPage, "limit": breedsPerPage, "breed_id": id, "size": 300]
         }
     }
     

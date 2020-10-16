@@ -12,3 +12,12 @@ struct BreedDisplayable {
     let name: String
     let description: String
 }
+
+struct DetailBreedDisplayable {
+    let rare: String
+    let lifeTime: String?
+    let hairless: Bool
+    let temperament: String
+    let origin: String
+    let weight: String?
+}
