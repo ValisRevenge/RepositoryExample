@@ -10,10 +10,11 @@ import Foundation
 
 struct PaginationCounter {
     var itemsPerPage: Int
-    var currentPage: Int = 1
-    var nextPage: Int = 2
+    var currentPage: Int = 0
+    var isLoadingProceed: Bool = false
+    var isLimitReached: Bool = false
     
-    var isLoadingProceed: Bool {
-        return nextPage == currentPage
+    init(itemsPerPage: Int) {
+        self.itemsPerPage = itemsPerPage
     }
 }

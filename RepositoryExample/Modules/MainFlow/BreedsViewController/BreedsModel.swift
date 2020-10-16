@@ -17,16 +17,23 @@ enum BreedsEvent: Event {
 protocol BreedsInput {
     
     var breedsCount: Int { get }
-    func breedNameAt(index: Int)-> String?
+    func breedAt(index: Int)-> BreedDisplayable?
     func load()
+    func openBreed(index: Int)
 }
-protocol BreedsOutput {}
+protocol BreedsOutput: class {
+    
+    func reload()
+}
 
 final class BreedsModel: EventNode {
-    private var counter: PaginationCounter = PaginationCounter(itemsPerPage: 3,
-                                                                         currentPage: 1, nextPage: 2)
+    
+    private var counter: PaginationCounter =
+        PaginationCounter(itemsPerPage: 7)
     private var breeds: [CatBreed] = []
     private var service: BreedService = BreedService()
+    
+    weak var output: BreedsOutput!
 }
 
 extension BreedsModel: BreedsInput {
@@ -35,18 +42,29 @@ extension BreedsModel: BreedsInput {
         return breeds.count
     }
     
+    func breedAt(index: Int)-> BreedDisplayable? {
+        return BreedDisplayable(name: breeds[index].name, description: breeds[index].temperament)
+    }
+    
     func load() {
-        guard !counter.isLoadingProceed else { return }
+        guard !counter.isLoadingProceed, !self.counter.isLimitReached else { return }
+        counter.isLoadingProceed = true
+        print(counter.isLoadingProceed)
         counter.currentPage += 1
         
         service.loadAllBreeds(currentPage: counter.currentPage, breedsPerPage: counter.itemsPerPage, completion: { [weak self] newBreeds in
-            self?.breeds.append(contentsOf: newBreeds)
-            self?.counter.nextPage += 1
+            
+            guard let `self` = self else { return }
+            
+            self.breeds.append(contentsOf: newBreeds)
+            self.counter.isLimitReached = newBreeds.count == 0
+            self.counter.isLoadingProceed.toggle()
+            self.output.reload()
         })
     }
     
-    func breedNameAt(index: Int)-> String? {
-        return breeds.count < index ? breeds[index].name : nil
+    func openBreed(index: Int) {
+        raise(event: BreedsEvent.openDetailBreed(breed: breeds[index]))
     }
 
 }

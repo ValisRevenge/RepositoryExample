@@ -24,7 +24,10 @@ class MainFlowCoordinator: FlowCoordinator {
     
     override func startFlow() -> UIViewController {
         let breedsVC = BreedsViewController(nibName: "BreedsViewController", bundle: nil)
-        breedsVC.model = BreedsModel(parent: self)
+        let model = BreedsModel(parent: self)
+        
+        breedsVC.model = model
+        model.output = breedsVC
         
         let navigationVC = UINavigationController(rootViewController: breedsVC)
         root = navigationVC
