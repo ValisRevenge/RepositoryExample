@@ -22,6 +22,7 @@ protocol BreedsInput {
     func openBreed(index: Int)
     func getLocalBreeds()
 }
+
 protocol BreedsOutput: class {
     
     func reload()
@@ -56,7 +57,11 @@ extension BreedsModel: BreedsInput {
     }
     
     func load() {
-        guard !counter.isLoadingProceed, !self.counter.isLimitReached else {
+        guard !counter.isLoadingProceed else {
+            return
+        }
+        
+        guard !self.counter.isLimitReached else {
             output.hideSpinner()
             return
         }

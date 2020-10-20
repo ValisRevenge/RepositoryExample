@@ -18,7 +18,6 @@ class ImageService {
         
         if let image = cache.object(forKey: url as NSURL) {
             completion(image)
-            print("used cache")
             return
         }
         
