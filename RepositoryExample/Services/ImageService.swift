@@ -12,21 +12,21 @@ import Alamofire
 class ImageService {
     
     static let shared: ImageService = ImageService()
-    private var cache: [URL: UIImage?] = [:]
+    private var cache = NSCache<NSURL, UIImage>()
     
     func loadImage(url: URL, completion: @escaping (_: UIImage?) -> Void) {
         
-        if let image = cache[url] {
+        if let image = cache.object(forKey: url as NSURL) {
             completion(image)
-            print("used_cache")
+            print("used cache")
             return
         }
         
         request(url).responseData(completionHandler: { [weak self] response in
-            guard let data = response.data else { return}
+            guard let data: Data = response.data,
+                let image: UIImage = UIImage(data: data) else { return }
             
-            let image: UIImage? = UIImage(data: data)
-            self?.cache[url] = image
+            self?.cache.setObject(image, forKey: url as NSURL)
             completion(image)
         })
     }

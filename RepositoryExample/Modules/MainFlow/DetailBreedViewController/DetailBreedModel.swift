@@ -25,6 +25,7 @@ class DetailBreedModel: EventNode {
     
     private var breed: CatBreed!
     private var photos: [Photo] = []
+    private var repository: BreedRepository = WebRepository()
     
     weak var output: DetailBreedOutput!
     
@@ -49,18 +50,22 @@ extension DetailBreedModel: DetailBreedInput {
         return DetailBreedDisplayable(rare: String(breed.rare),
             lifeTime: breed.lifeSpan,
             hairless: breed.hairless,
-            temperament: breed.temperament,
-            origin: breed.origin,
-            intelligence: breed.intelligence.name)
+            temperament: breed.temperament ?? "",
+            origin: breed.origin ?? "",
+            intelligence: breed.intelligenceScore.name)
     }
     
     func load() {
-        BreedService().loadBreedImages(breedId: breed.id,
+        
+        guard let id = breed.breedId else { return }
+        
+        repository.loadBreedImages(breedId: id,
                                        page: 0,
                                        itemsPerPage: 5,
                                        completion: { [weak self] newPhotos in
-            self?.photos.append(contentsOf: newPhotos)
-            self?.output.reload()
+            guard let `self` = self else { return }
+            self.photos.append(contentsOf: newPhotos)
+            self.output.reload()
         })
     }
     

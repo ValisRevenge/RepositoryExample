@@ -9,8 +9,8 @@
 import Foundation
 
 struct BreedDisplayable {
-    let name: String
-    let description: String
+    let name: String?
+    let description: String?
 }
 
 struct DetailBreedDisplayable {

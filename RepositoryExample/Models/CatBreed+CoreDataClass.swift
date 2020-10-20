@@ -1,25 +1,25 @@
 //
-//  CatBreed.swift
+//  CatBreed+CoreDataClass.swift
 //  RepositoryExample
 //
-//  Created by Mishko on 10/12/20.
+//  Created by Mishko on 10/19/20.
 //  Copyright © 2020 byMishko. All rights reserved.
+//
 //
 
 import Foundation
+import CoreData
 
-struct CatBreed: Decodable {
+@objc(CatBreed)
+public class CatBreed: NSManagedObject, Decodable {
     
-    let id: String
-    let name: String
-    let otherNames: String?
-    let lifeSpan: String
-    let hairless: Bool
-    let rare: Bool
-    let origin: String
-    let temperament: String
-    var intelligence: Intelligence = .unknown
-    
+    var intelligenceScore: Intelligence {
+        if let value = intelligence?.intValue {
+            return Intelligence(rawValue: value) ?? .unknown
+        }
+        return .unknown
+    }
+
     enum Keys: String, CodingKey {
         case id
         case name
@@ -32,10 +32,18 @@ struct CatBreed: Decodable {
         case life_span
     }
     
-    init(from decoder: Decoder) throws {
+    required convenience public init(from decoder: Decoder) throws {
+        
+        let context = DBManager.shared.defaultContext
+        guard let entityDescription = NSEntityDescription.entity(forEntityName: "CatBreed", in: context) else {
+            fatalError("Failed to create entity description")
+        }
+        
+        self.init(entity: entityDescription, insertInto: context)
+        
         let container = try decoder.container(keyedBy: Keys.self)
         
-        id = try container.decode(String.self, forKey: .id)
+        breedId = try container.decode(String.self, forKey: .id)
         name = try container.decode(String.self, forKey: .name)
         otherNames = nil
         lifeSpan = try container.decode(String.self, forKey: .life_span)
@@ -49,7 +57,7 @@ struct CatBreed: Decodable {
         temperament = try container.decode(String.self, forKey: .temperament)
         
         if let intellectScore = try? container.decode(Int.self, forKey: .intelligence) {
-            intelligence = Intelligence(rawValue: intellectScore) ?? .unknown
+            intelligence = NSNumber(integerLiteral: intellectScore)
         }
     }
 }

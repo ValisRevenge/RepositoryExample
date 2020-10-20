@@ -19,7 +19,7 @@ protocol API {
 
 enum BreedAPI: API {
     
-    case allBreeds(page: Int, limit: Int)
+    case allBreeds(page: Int?, limit: Int?)
     case imagesBy(breedId: String, page: Int, limit: Int)
     
     var path: String {
@@ -47,7 +47,10 @@ enum BreedAPI: API {
     var params: [String : Any] {
         switch self {
         case .allBreeds(page: let currentPage, limit: let breedsPerPage):
-            return ["page": currentPage, "limit": breedsPerPage]
+            if let currentPage: Int = currentPage, let breedsPerPage: Int = breedsPerPage {
+                return ["page": currentPage, "limit": breedsPerPage]
+            }
+            return [:]
         case .imagesBy(breedId: let id, page: let currentPage, limit: let breedsPerPage):
             return ["page": currentPage, "limit": breedsPerPage, "breed_id": id, "size": 300]
         }

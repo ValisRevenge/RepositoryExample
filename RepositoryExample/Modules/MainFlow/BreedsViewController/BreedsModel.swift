@@ -20,10 +20,12 @@ protocol BreedsInput {
     func breedAt(index: Int)-> BreedDisplayable?
     func load()
     func openBreed(index: Int)
+    func getLocalBreeds()
 }
 protocol BreedsOutput: class {
     
     func reload()
+    func hideSpinner()
 }
 
 final class BreedsModel: EventNode {
@@ -31,27 +33,37 @@ final class BreedsModel: EventNode {
     private var counter: PaginationCounter =
         PaginationCounter(itemsPerPage: 7)
     private var breeds: [CatBreed] = []
-    private var service: BreedService = BreedService()
+    private var repository: BreedRepository = WebRepository()
     
     weak var output: BreedsOutput!
 }
 
 extension BreedsModel: BreedsInput {
     
+    func getLocalBreeds() {
+        LocalRepository().getAll { localBreeds in
+            print(322)
+        }
+        DBManager.shared.saveDefault()
+    }
+    
     var breedsCount: Int {
         return breeds.count
     }
     
-    func breedAt(index: Int)-> BreedDisplayable? {
+    func breedAt(index: Int) -> BreedDisplayable? {
         return BreedDisplayable(name: breeds[index].name, description: breeds[index].temperament)
     }
     
     func load() {
-        guard !counter.isLoadingProceed, !self.counter.isLimitReached else { return }
+        guard !counter.isLoadingProceed, !self.counter.isLimitReached else {
+            output.hideSpinner()
+            return
+        }
         counter.isLoadingProceed = true
         counter.currentPage += 1
         
-        service.loadAllBreeds(currentPage: counter.currentPage, breedsPerPage: counter.itemsPerPage, completion: { [weak self] newBreeds in
+        repository.getAt(startIndex: counter.currentPage, count: counter.currentPage) { [weak self] newBreeds in
             
             guard let `self` = self else { return }
             
@@ -59,7 +71,7 @@ extension BreedsModel: BreedsInput {
             self.counter.isLimitReached = newBreeds.count == 0
             self.counter.isLoadingProceed.toggle()
             self.output.reload()
-        })
+        }
     }
     
     func openBreed(index: Int) {

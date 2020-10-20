@@ -22,7 +22,7 @@ class PhotoCell: UITableViewCell {
         spinnerView.isHidden = false
         ImageService.shared.loadImage(url: url, completion: { [weak self] image in
             self?.catImageView.image = image
-            self?.spinnerView.isHidden = true
+            self?.spinnerView.stopAnimating()
         })
     }
     

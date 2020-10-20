@@ -31,12 +31,19 @@ final class BreedsViewController: UIViewController {
         title = "Breeds"
     }
 
+    @IBAction func testLocalBreeds() {
+        model.getLocalBreeds()
+    }
 }
 
 extension BreedsViewController: BreedsOutput {
     
     func reload() {
         tableView.reloadData()
+        spinnerView.isHidden = true
+    }
+    
+    func hideSpinner() {
         spinnerView.isHidden = true
     }
 }
