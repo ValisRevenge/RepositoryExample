@@ -30,10 +30,6 @@ final class BreedsViewController: UIViewController {
         
         title = "Breeds"
     }
-
-    @IBAction func testLocalBreeds() {
-        model.getLocalBreeds()
-    }
 }
 
 extension BreedsViewController: BreedsOutput {

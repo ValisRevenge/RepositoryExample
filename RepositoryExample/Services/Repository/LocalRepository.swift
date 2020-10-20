@@ -16,25 +16,38 @@ class LocalRepository: BreedRepository {
     }
     
     func getAll(completion: @escaping ([CatBreed]) -> Void) {
-        let request = NSFetchRequest<CatBreed>()
+        let request = NSFetchRequest<CatBreed>(entityName: "CatBreed")
         
         do {
-            let breeds = try request.execute()
-            completion(breeds)
+            let breeds = try DBManager.shared.defaultContext.fetch(request)
             
+            completion(breeds)
         } catch {
             print(error.localizedDescription)
         }
     }
     
-    func getAt(startIndex: Int, count: Int, completion: @escaping ([CatBreed]) -> Void) {
-        let request = NSFetchRequest<CatBreed>()
+    func getAt(startPage: Int, count: Int, completion: @escaping ([CatBreed]) -> Void) {
+        let request = NSFetchRequest<CatBreed>(entityName: "CatBreed")
+
+        let startIndex = startPage * count
         
-        if let breeds = try? request.execute(), breeds.count > startIndex + count  {
+        if var breeds = try? DBManager.shared.defaultContext.fetch(request), breeds.count > startIndex {
+            breeds.sort(by: { b1, b2 in
+                if let name1 = b1.name, let name2 = b2.name {
+                    return name1 < name2
+                }
+                return true
+            })
             
-            let breedsSlice = breeds[startIndex...startIndex+count]
+            let endIndex = breeds.count > (startIndex + count - 1) ?
+                (startIndex + count - 1) : breeds.count - 1
+            
+            let breedsSlice = breeds[startIndex...endIndex]
+            
             completion(Array(breedsSlice))
-            DBManager.shared.saveDefault()
+        } else {
+            completion([])
         }
     }
     

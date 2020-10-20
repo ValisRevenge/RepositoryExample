@@ -20,7 +20,6 @@ protocol BreedsInput {
     func breedAt(index: Int)-> BreedDisplayable?
     func load()
     func openBreed(index: Int)
-    func getLocalBreeds()
 }
 
 protocol BreedsOutput: class {
@@ -32,21 +31,14 @@ protocol BreedsOutput: class {
 final class BreedsModel: EventNode {
     
     private var counter: PaginationCounter =
-        PaginationCounter(itemsPerPage: 7)
+        PaginationCounter(itemsPerPage: 9)
     private var breeds: [CatBreed] = []
-    private var repository: BreedRepository = WebRepository()
+    private var repository: BreedRepository = LocalRepository()
     
     weak var output: BreedsOutput!
 }
 
 extension BreedsModel: BreedsInput {
-    
-    func getLocalBreeds() {
-        LocalRepository().getAll { localBreeds in
-            print(322)
-        }
-        DBManager.shared.saveDefault()
-    }
     
     var breedsCount: Int {
         return breeds.count
@@ -68,13 +60,21 @@ extension BreedsModel: BreedsInput {
         counter.isLoadingProceed = true
         counter.currentPage += 1
         
-        repository.getAt(startIndex: counter.currentPage, count: counter.currentPage) { [weak self] newBreeds in
+        repository.getAt(startPage: counter.currentPage-1, count: counter.itemsPerPage) { [weak self] newBreeds in
             
             guard let `self` = self else { return }
             
             self.breeds.append(contentsOf: newBreeds)
-            self.counter.isLimitReached = newBreeds.count == 0
             self.counter.isLoadingProceed.toggle()
+
+            if newBreeds.count == 0 && self.repository is LocalRepository {
+                self.repository = WebRepository()
+                self.load()
+                return
+            } else {
+                DBManager.shared.saveDefault()
+            }
+            self.counter.isLimitReached = newBreeds.count == 0
             self.output.reload()
         }
     }

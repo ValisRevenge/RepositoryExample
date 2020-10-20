@@ -58,8 +58,8 @@ class WebRepository: BreedRepository {
         })
     }
     
-    func getAt(startIndex: Int, count: Int, completion: @escaping ([CatBreed]) -> Void) {
-        let api = BreedAPI.allBreeds(page: startIndex, limit: count)
+    func getAt(startPage: Int, count: Int, completion: @escaping ([CatBreed]) -> Void) {
+        let api = BreedAPI.allBreeds(page: startPage, limit: count)
         
         request(api.url,
                 method: .get,

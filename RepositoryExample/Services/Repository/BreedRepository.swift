@@ -10,7 +10,7 @@ import Foundation
 
 protocol BreedRepository {
     func getAll(completion: @escaping (_: [CatBreed]) -> Void)
-    func getAt(startIndex: Int, count: Int, completion: @escaping (_: [CatBreed]) -> Void)
+    func getAt(startPage: Int, count: Int, completion: @escaping (_: [CatBreed]) -> Void)
     func loadBreedImages(breedId: String,
                          page: Int,
                          itemsPerPage: Int,
