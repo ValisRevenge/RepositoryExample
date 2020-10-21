@@ -9,7 +9,7 @@
 import Foundation
 import Alamofire
 
-class WebRepository: BreedRepository {
+class BreedWebService: BreedRepository {
     
     func loadBreedImages(breedId: String,
                          page: Int,
@@ -59,6 +59,7 @@ class WebRepository: BreedRepository {
     }
     
     func getAt(startPage: Int, count: Int, completion: @escaping ([CatBreed]) -> Void) {
+        
         let api = BreedAPI.allBreeds(page: startPage, limit: count)
         
         request(api.url,

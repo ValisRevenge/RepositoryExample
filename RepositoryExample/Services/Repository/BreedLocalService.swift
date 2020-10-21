@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-class LocalRepository: BreedRepository {
+class BreedLocalService: BreedRepository {
     
     func loadBreedImages(breedId: String, page: Int, itemsPerPage: Int, completion: @escaping ([Photo]) -> Void) {
         //
@@ -28,8 +28,8 @@ class LocalRepository: BreedRepository {
     }
     
     func getAt(startPage: Int, count: Int, completion: @escaping ([CatBreed]) -> Void) {
+        
         let request = NSFetchRequest<CatBreed>(entityName: "CatBreed")
-
         let startIndex = startPage * count
         
         if var breeds = try? DBManager.shared.defaultContext.fetch(request), breeds.count > startIndex {

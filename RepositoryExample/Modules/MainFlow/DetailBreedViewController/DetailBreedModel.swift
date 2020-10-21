@@ -25,7 +25,7 @@ class DetailBreedModel: EventNode {
     
     private var breed: CatBreed!
     private var photos: [Photo] = []
-    private var repository: BreedRepository = WebRepository()
+    private var repository: BreedRepository = BreedWebService()
     
     weak var output: DetailBreedOutput!
     

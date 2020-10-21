@@ -33,7 +33,7 @@ final class BreedsModel: EventNode {
     private var counter: PaginationCounter =
         PaginationCounter(itemsPerPage: 9)
     private var breeds: [CatBreed] = []
-    private var repository: BreedRepository = LocalRepository()
+    private var repository: BreedRepository = Repository()
     
     weak var output: BreedsOutput!
 }
@@ -65,15 +65,8 @@ extension BreedsModel: BreedsInput {
             guard let `self` = self else { return }
             
             self.breeds.append(contentsOf: newBreeds)
-            self.counter.isLoadingProceed.toggle()
+            self.counter.isLoadingProceed = false
 
-            if newBreeds.count == 0 && self.repository is LocalRepository {
-                self.repository = WebRepository()
-                self.load()
-                return
-            } else {
-                DBManager.shared.saveDefault()
-            }
             self.counter.isLimitReached = newBreeds.count == 0
             self.output.reload()
         }
