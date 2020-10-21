@@ -32,7 +32,9 @@ class BreedLocalService: BreedRepository {
         let request = NSFetchRequest<CatBreed>(entityName: "CatBreed")
         let startIndex = startPage * count
         
-        if var breeds = try? DBManager.shared.defaultContext.fetch(request), breeds.count > startIndex {
+        if var breeds = try? DBManager.shared.defaultContext.fetch(request),
+            breeds.count > startIndex {
+            
             breeds.sort(by: { b1, b2 in
                 if let name1 = b1.name, let name2 = b2.name {
                     return name1 < name2
@@ -40,12 +42,13 @@ class BreedLocalService: BreedRepository {
                 return true
             })
             
-            let endIndex = breeds.count > (startIndex + count - 1) ?
-                (startIndex + count - 1) : breeds.count - 1
-            
+            let endIndex = breeds.count > (startIndex + count) ?
+                (startIndex + count) : breeds.count - 1
             let breedsSlice = breeds[startIndex...endIndex]
             
-            completion(Array(breedsSlice))
+            DispatchQueue.main.async {
+                completion(Array(breedsSlice))
+            }
         } else {
             completion([])
         }

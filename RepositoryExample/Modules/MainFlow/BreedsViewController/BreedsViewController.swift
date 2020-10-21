@@ -69,7 +69,7 @@ extension BreedsViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row >= model.breedsCount - 2 {
+        if indexPath.row >= model.breedsCount - 3 {
             spinnerView.isHidden = false
             model.load()
         }

@@ -22,25 +22,10 @@ extension Repository: BreedRepository {
                          itemsPerPage: Int,
                          completion: @escaping ([Photo]) -> Void) {
         
-        let api = BreedAPI.imagesBy(breedId: breedId, page: page, limit: itemsPerPage)
-        
-        request(api.url,
-                method: .get,
-                parameters: api.params,
-                encoding: api.encoding,
-                headers: api.headers).responseData(completionHandler: { response in
-                    guard let data = response.data else {
-                        return
-                    }
-                    
-                    do {
-                        let photos = try JSONDecoder().decode([Photo].self, from: data)
-                        completion(photos)
-                    }
-                    catch(let error) {
-                        print(error.localizedDescription)
-                    }
-                })
+        service.loadBreedImages(breedId: breedId,
+                                page: page,
+                                itemsPerPage: itemsPerPage,
+                                completion: completion)
     }
     
     func getAll(completion: @escaping ([CatBreed]) -> Void) {
