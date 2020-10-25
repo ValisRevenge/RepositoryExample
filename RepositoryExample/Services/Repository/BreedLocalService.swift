@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-class BreedLocalService: BreedRepository {
+class BreedLocalService: BreedService {
     
     func loadBreedImages(breedId: String, page: Int, itemsPerPage: Int, completion: @escaping ([Photo]) -> Void) {
         //

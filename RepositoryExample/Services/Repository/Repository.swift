@@ -12,12 +12,12 @@ import CoreData
 
 final class Repository {
     
-    private var service: BreedRepository = BreedLocalService()
+    private var service: BreedService = BreedLocalService()
 }
 
 extension Repository: BreedRepository {
     
-    func loadBreedImages(breedId: String,
+    func loadImages(breedId: String,
                          page: Int,
                          itemsPerPage: Int,
                          completion: @escaping ([Photo]) -> Void) {

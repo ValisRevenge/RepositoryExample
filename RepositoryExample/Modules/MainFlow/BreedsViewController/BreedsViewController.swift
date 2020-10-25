@@ -10,8 +10,8 @@ import UIKit
 
 final class BreedsViewController: UIViewController {
     
-    @IBOutlet weak var spinnerView: UIActivityIndicatorView!
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet private weak var spinnerView: UIActivityIndicatorView!
+    @IBOutlet private weak var tableView: UITableView!
     
     var model: BreedsInput!
 

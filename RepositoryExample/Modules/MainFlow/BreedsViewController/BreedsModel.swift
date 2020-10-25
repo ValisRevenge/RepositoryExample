@@ -17,7 +17,7 @@ enum BreedsEvent: Event {
 protocol BreedsInput {
     
     var breedsCount: Int { get }
-    func breedAt(index: Int)-> BreedDisplayable?
+    func breedAt(index: Int) -> BreedDisplayable?
     func load()
     func openBreed(index: Int)
 }
@@ -33,7 +33,7 @@ final class BreedsModel: EventNode {
     private var counter: PaginationCounter =
         PaginationCounter(itemsPerPage: 9)
     private var breeds: [CatBreed] = []
-    private var repository: BreedRepository = Repository()
+    private var repository: Repository = Repository()
     
     weak var output: BreedsOutput!
 }

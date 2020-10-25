@@ -14,7 +14,7 @@ import CoreData
 public class CatBreed: NSManagedObject, Decodable {
     
     var intelligenceScore: Intelligence {
-        if let value = intelligence?.intValue {
+        if let value = intelligence?.int8Value {
             return Intelligence(rawValue: value) ?? .unknown
         }
         return .unknown
@@ -35,7 +35,7 @@ public class CatBreed: NSManagedObject, Decodable {
     required convenience public init(from decoder: Decoder) throws {
         
         let context = DBManager.shared.defaultContext
-        guard let entityDescription = NSEntityDescription.entity(forEntityName: "CatBreed", in: context) else {
+        guard let entityDescription = NSEntityDescription.entity(forEntityName: CatBreed.description(), in: context) else {
             fatalError("Failed to create entity description")
         }
         

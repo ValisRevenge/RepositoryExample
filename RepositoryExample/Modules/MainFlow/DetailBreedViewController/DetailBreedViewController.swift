@@ -8,16 +8,16 @@
 
 import UIKit
 
-class DetailBreedViewController: UIViewController {
+final class DetailBreedViewController: UIViewController {
     
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet private weak var tableView: UITableView!
     
-    @IBOutlet weak var rareLabel: UILabel!
-    @IBOutlet weak var lifeLabel: UILabel!
-    @IBOutlet weak var originLabel: UILabel!
-    @IBOutlet weak var hairlessLabel: UILabel!
-    @IBOutlet weak var temperamentLabel: UILabel!
-    @IBOutlet weak var weightLabel: UILabel!
+    @IBOutlet private weak var rareLabel: UILabel!
+    @IBOutlet private weak var lifeLabel: UILabel!
+    @IBOutlet private weak var originLabel: UILabel!
+    @IBOutlet private weak var hairlessLabel: UILabel!
+    @IBOutlet private weak var temperamentLabel: UILabel!
+    @IBOutlet private weak var weightLabel: UILabel!
 
     var model: DetailBreedInput!
 

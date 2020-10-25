@@ -21,11 +21,11 @@ protocol DetailBreedOutput: class {
     func reload()
 }
 
-class DetailBreedModel: EventNode {
+final class DetailBreedModel: EventNode {
     
     private var breed: CatBreed!
     private var photos: [Photo] = []
-    private var repository: BreedRepository = BreedWebService()
+    private var service = BreedWebService()
     
     weak var output: DetailBreedOutput!
     
@@ -59,7 +59,7 @@ extension DetailBreedModel: DetailBreedInput {
         
         guard let id = breed.breedId else { return }
         
-        repository.loadBreedImages(breedId: id,
+        service.loadBreedImages(breedId: id,
                                        page: 0,
                                        itemsPerPage: 5,
                                        completion: { [weak self] newPhotos in

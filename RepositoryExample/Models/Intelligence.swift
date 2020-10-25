@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum Intelligence: Int {
+enum Intelligence: Int8 {
     case unknown = 0
     case veryLow
     case low

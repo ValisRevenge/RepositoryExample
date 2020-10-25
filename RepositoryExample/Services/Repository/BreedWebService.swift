@@ -9,7 +9,7 @@
 import Foundation
 import Alamofire
 
-class BreedWebService: BreedRepository {
+class BreedWebService: BreedService {
     
     func loadBreedImages(breedId: String,
                          page: Int,

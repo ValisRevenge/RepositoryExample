@@ -42,31 +42,20 @@ class DBManager {
     
     // MARK: - Config
     
-    var shouldCacheStorage: Bool = false
-    
-    var storeType: String {
-        
-        return NSSQLiteStoreType
-    }
-    
-    lazy var managedObjectModel: NSManagedObjectModel = {
-        
-        let managedObjectModel: NSManagedObjectModel = createManagedObjectModel()
-        return managedObjectModel
-    } ()
-    
-    lazy var defaultContext: NSManagedObjectContext = {
-        let context: NSManagedObjectContext = createDefaultContext(container: defaultPersistentContainer)
+    private lazy var context: NSManagedObjectContext = {
+        let context: NSManagedObjectContext = createDefaultContext(container: persistentContainer)
         context.mergePolicy = NSMergePolicy.overwrite
         return context
     } ()
     
-    
-    lazy var defaultPersistentContainer: NSPersistentContainer = {
-
+    private lazy var persistentContainer: NSPersistentContainer = {
         let result = createDefaultContainer()
         return result
     } ()
+    
+    var defaultContext: NSManagedObjectContext {
+        return context
+    }
     
     // MARK: - Creation
     
@@ -89,21 +78,6 @@ class DBManager {
         result.persistentStoreCoordinator = container.persistentStoreCoordinator
         result.mergePolicy = NSOverwriteMergePolicy
         result.undoManager = nil
-        
-        return result
-    }
-    
-    func createManagedObjectModel() -> NSManagedObjectModel {
-        
-        var result: NSManagedObjectModel
-        
-        if let mergedModel: NSManagedObjectModel = NSManagedObjectModel.mergedModel(from: [Bundle.main]) {
-            
-            result = mergedModel
-        } else {
-            
-            result = NSManagedObjectModel()
-        }
         
         return result
     }
@@ -152,19 +126,6 @@ class DBManager {
         }
     }
     
-    // MARK: - Find same object
-    
-    func isBreedUnique(id: String) -> Bool {
-        
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest<NSFetchRequestResult>(entityName: "CatBreed")
-        fetchRequest.predicate = NSPredicate(format: "identifier = %d", argumentArray: [id])
-        
-        if let result = try? defaultContext.fetch(fetchRequest), result.count != 0 {
-            return false
-        }
-        return true
-    }
-    
     // MARK: - Remove entities
     
     open func removeAllEntitiesWithName(_ anEntityName: String) {
@@ -194,29 +155,7 @@ class DBManager {
             
             if aError != nil {
                 
-                print("STStorage: remove entities with error: \(String(describing: aError))")
-            }
-        })
-    }
-    
-    func remove(object aObject: NSManagedObject) {
-        
-        saveAndWait(block: { context in
-            
-            if let obj = aObject.inContext(context) {
-                
-                context.delete(obj)
-            }
-        })
-    }
-    
-    func remove(objects aObjects: [NSManagedObject]) {
-        
-        saveAndWait(block: { context in
-            
-            for obj in aObjects {
-                
-                context.delete(obj)
+                print("Storage: remove entities with error: \(String(describing: aError))")
             }
         })
     }

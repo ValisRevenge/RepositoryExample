@@ -9,9 +9,12 @@
 import Foundation
 
 protocol BreedRepository {
-    func getAll(completion: @escaping (_: [CatBreed]) -> Void)
-    func getAt(startPage: Int, count: Int, completion: @escaping (_: [CatBreed]) -> Void)
-    func loadBreedImages(breedId: String,
+    
+    associatedtype T
+    
+    func getAll(completion: @escaping (_: [T]) -> Void)
+    func getAt(startPage: Int, count: Int, completion: @escaping (_: [T]) -> Void)
+    func loadImages(breedId: String,
                          page: Int,
                          itemsPerPage: Int,
                          completion: @escaping (_: [Photo]) -> Void)
